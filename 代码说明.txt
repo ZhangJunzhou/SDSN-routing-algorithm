@@ -1,0 +1,68 @@
+D.py
+        完成了两种DijkStra算法；
+        
+        第一种：经典的DijkStra算法，第一遍用于记录源节点到其他所有节点的权重；
+第二次遍历（n-1次迭代）用于根据当前最短路径 更新到其他节点的 最短路径；
+不足在于第二种遍历，总是 从小到大进行遍历，因此，当跳数相等时，优先选择数值较小的节点；；；
+
+        第二种：选择性迭代DijkStra算法，同上，改进之处在于，当s < d时，从数值较小的节点进行遍历，
+当s > d时，从数值较大的节点进行遍历，因此减少了节点被复用的次数，，解决了一部分的负载均衡；；
+
+        输出了，节点之间的路径，以及所有路径中，每个节点被当做中转节点的次数；；
+        路由表类似于：{1: {2: [1, 2], 3: [1, 2, 3], 4: [1, 4], 5: [1, 2, 5], 6: [1, 2, 3, 6], 7: [1, 4, 7], 8: [1, 2, 5, 8], 9: [1, 2, 3, 6, 9]},
+
+
+
+Dresult.py
+        涉及到流的仿真；
+        Gamma_flow(shape, scale, number):
+	伽马分布，shape和scale不是指范围，指的是形状参数和指数参数，该函数会产生number个流量，返回的就是 一个list[]，list的length就是 number的大小
+
+        Generate_random_data_pair(number):
+	randomint()产生随机的 源卫星节点+目的卫星节点，返回值，pair_list（[s, d, flow大小])、all_flow（number个节点的流加起来的和；）  pair_list类似于： [27, 23], 3.473436070722865], [[53, 46], 76.58872071858906]  all_flow类似于all flow :  5984.9677046929855
+
+         Network_flow(G,number,weight,original): （1）计算得到全部节点的路由表，路由表中的中转节点 的weight减去相应的flow值，即为剩余带宽，当剩余带宽少于5％时，则认为是拥塞的节点，返回值是congestion_pair_list（拥塞链路对），和上个函数生成的all_flow
+
+        仿真进行中，但是仿真仅仅15对pair（20-35）；；
+
+
+Flow.py
+        同Dresult.py，但是对数设置的是32-71；
+
+
+
+下述三个用于生成剩余带宽的数据，进而绘图进行相关数据的比较
+con_var_LCRA.py
+            f=open("con_var_LCRA.txt","w")
+            # 写入原始的带宽
+            f.writelines(str(original_result)+'\n')
+            # 写入 使用LCRA后的剩余带宽均值，剩余带宽标准差
+            f.writelines(str(load_result))
+            f.close()
+
+con_var_nd.py
+            f=open("con_var_nd.txt","w")
+            # 写入 使用Dijkstra后的剩余带宽均值，剩余带宽标准差
+            f.writelines(str(original_result)+'\n')
+            f.writelines(str(load_result))
+            f.close()
+
+con_var_st.py
+            f=open("con_var_st.txt","w")
+            f.writelines(str(original_result)+'\n')
+            # 写入 使用SSID后的剩余带宽均值，剩余带宽标准差
+            f.writelines(str(new_result))
+            f.close()
+
+
+
+
+
+
+        
+
+
+
+
+
+  
